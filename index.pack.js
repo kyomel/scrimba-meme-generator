@@ -511,6 +511,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 exports.default = Meme;
@@ -526,16 +528,31 @@ var _memesData2 = _interopRequireDefault(_memesData);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Meme() {
-  var _React$useState = _react2.default.useState(""),
+  var _React$useState = _react2.default.useState({
+    topText: "",
+    bottomText: "",
+    randomImage: "http://i.imgflip.com/1bij.jpg"
+  }),
       _React$useState2 = _slicedToArray(_React$useState, 2),
-      memeImage = _React$useState2[0],
-      setMemeImage = _React$useState2[1];
+      meme = _React$useState2[0],
+      setMeme = _React$useState2[1];
+
+  var _React$useState3 = _react2.default.useState(_memesData2.default),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      allMemeImages = _React$useState4[0],
+      setAllMemeImages = _React$useState4[1];
 
   function getMemeImage() {
-    var memeArr = _memesData2.default.data.memes;
+    var memeArr = allMemeImages.data.memes;
     var randomNumber = Math.floor(Math.random() * memeArr.length);
-    setMemeImage(memeArr[randomNumber].url);
+    var url = memeArr[randomNumber].url;
+    setMeme(function (prevMeme) {
+      return _extends({}, prevMeme, {
+        randomImage: url
+      });
+    });
   }
+
   return _react2.default.createElement(
     "main",
     null,
@@ -558,9 +575,9 @@ function Meme() {
           className: "form--button",
           onClick: getMemeImage },
         "Get a new meme image \uD83D\uDDBC"
-      ),
-      _react2.default.createElement("img", { src: memeImage, className: "meme--image" })
-    )
+      )
+    ),
+    _react2.default.createElement("img", { src: meme.randomImage, className: "meme--image" })
   );
 }
 
