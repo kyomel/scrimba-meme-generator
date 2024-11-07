@@ -527,6 +527,8 @@ var _memesData2 = _interopRequireDefault(_memesData);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function Meme() {
   var _React$useState = _react2.default.useState({
     topText: "",
@@ -553,6 +555,16 @@ function Meme() {
     });
   }
 
+  function handleChange(event) {
+    var _event$target = event.target,
+        name = _event$target.name,
+        value = _event$target.value;
+
+    setMeme(function (prevMeme) {
+      return _extends({}, prevMeme, _defineProperty({}, name, value));
+    });
+  }
+
   return _react2.default.createElement(
     "main",
     null,
@@ -562,12 +574,18 @@ function Meme() {
       _react2.default.createElement("input", {
         className: "form--input",
         type: "text",
-        placeholder: "Shut up"
+        placeholder: "Top Text",
+        name: "topText",
+        value: meme.topText,
+        onChange: handleChange
       }),
       _react2.default.createElement("input", {
         className: "form--input",
         type: "text",
-        placeholder: "and take my money"
+        placeholder: "Bottom Text",
+        name: "bottomText",
+        value: meme.bottomText,
+        onChange: handleChange
       }),
       _react2.default.createElement(
         "button",
@@ -577,7 +595,21 @@ function Meme() {
         "Get a new meme image \uD83D\uDDBC"
       )
     ),
-    _react2.default.createElement("img", { src: meme.randomImage, className: "meme--image" })
+    _react2.default.createElement(
+      "div",
+      { className: "meme" },
+      _react2.default.createElement("img", { src: meme.randomImage, className: "meme--image" }),
+      _react2.default.createElement(
+        "h2",
+        { className: "meme--text top" },
+        meme.topText
+      ),
+      _react2.default.createElement(
+        "h2",
+        { className: "meme--text bottom" },
+        meme.bottomText
+      )
+    )
   );
 }
 
